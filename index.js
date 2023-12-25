@@ -137,14 +137,17 @@ allBtn.addEventListener("click", showAllGames);
 // grab the description container
 const descriptionContainer = document.getElementById("description-container");
 
+const calculateUnfundedGames = () =>
+  GAMES_JSON.filter((game) => game.pledged < game.goal).length;
+
 // use filter or reduce to count the number of unfunded games
-const numUnfunded = GAMES_JSON.filter(
-  (game) => game.pledged < game.goal
-).length;
+const numUnfunded = calculateUnfundedGames();
 descriptionContainer.innerHTML =
   numUnfunded === 1
     ? `There is ${numUnfunded} unfunded game on this site.`
-    : `There are ${numUnfunded === 0? 'no' : numUnfunded} unfunded games on this site.`;
+    : `There are ${
+        numUnfunded === 0 ? "no" : numUnfunded
+      } unfunded games on this site.`;
 // create a string that explains the number of unfunded games using the ternary operator
 
 // create a new DOM element containing the template string and append it to the description container
@@ -170,10 +173,31 @@ const topGameName = document.createElement("h3");
 topGameName.innerText = topGame.name;
 firstGameContainer.appendChild(topGameName);
 
-
 // do the same for the runner up item
 const runnerUpName = document.createElement("h3");
 runnerUpName.innerText = runnerUp.name;
 secondGameContainer.appendChild(runnerUpName);
 
 addGamesToPage(GAMES_JSON);
+const backgroundInfo = `
+<p>
+    Established in the heart of a bustling metropolis twelve years ago, our esteemed enterprise, Sea Monster Crowdfunding, embarked on a remarkable journey with a visionary zeal to kindle the flames of creativity in the realm of independent game development. Our raison d'être is to serve as a beacon of hope and a catalyst for innovation, offering a platform where the seeds of ingenuity can find fertile soil and the nourishment they require to bloom into the captivating digital experiences that gamers around the world cherish and laud.
+</p>
+<p>
+    Over the span of our operations, which has witnessed the wax and wane of many a moon, we have had the privilege of witnessing a cavalcade of games, each unique in its narrative and gameplay, come to life through the generous contributions of patrons who share our passion for gaming renaissance. Despite our numerous successes, and the myriad of games that have soared beyond their funding aspirations, a not insignificant number of promising ventures still remain on the cusp of realization, awaiting the munificent support of contributors to cross the threshold from the unfunded echelons into the pantheon of fully-funded masterpieces. As of the present moment, the number of such games that stand unfunded, each a sleeping giant with the potential to revolutionize the gaming landscape, is a matter we intend to disclose with precise numbers to evoke action from our esteemed supporters.
+</p>
+`;
+
+// JS code to insert the verbose background information into the description container
+document.getElementById("description-container").innerHTML = backgroundInfo;
+
+// Assuming you have a function to calculate the number of unfunded games
+const unfundedGamesCount = calculateUnfundedGames(); // This function should return the count of unfunded games
+const unfundedGamesInfo = `
+<p>
+    As we stand on the precipice of the current fiscal year, an analytical gaze cast upon our portfolio of projects reveals that a total of ${unfundedGamesCount} games, each with their own unique artistry and interactive storytelling potential, are yet to achieve the funding necessary to catapult them from the drawing board into the waiting hands of eager gamers and connoisseurs of the gaming arts. This number, while reflective of the vast ocean of untapped potential that lies dormant within our collective creative endeavors, also stands as a clarion call to our beloved community, beckoning the support and contributions that can transform these embryonic concepts into fully-fledged gaming experiences.
+</p>
+`;
+
+// Insert the unfunded games information into the stats container
+document.getElementById("num-contributions").innerHTML = unfundedGamesInfo;
